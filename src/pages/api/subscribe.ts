@@ -3,7 +3,7 @@ import { Resend } from "resend";
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     // Parse request body
     const body = await request.json();
@@ -35,7 +35,10 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Verify Turnstile token with Cloudflare
-    const turnstileSecret = import.meta.env.TURNSTILE_SECRET_KEY;
+    // Access environment variables from Cloudflare runtime
+    const env = locals.runtime?.env || import.meta.env;
+    const turnstileSecret = env.TURNSTILE_SECRET_KEY;
+
     if (!turnstileSecret) {
       console.error("TURNSTILE_SECRET_KEY is not configured");
       return new Response(
@@ -71,7 +74,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Initialize Resend
-    const resendApiKey = import.meta.env.RESEND_API_KEY;
+    const resendApiKey = env.RESEND_API_KEY;
     if (!resendApiKey) {
       console.error("RESEND_API_KEY is not configured");
       return new Response(
@@ -85,11 +88,20 @@ export const POST: APIRoute = async ({ request }) => {
     const resend = new Resend(resendApiKey);
 
     // Add contact to Resend
-    // Note: You'll need to create an audience in Resend dashboard
-    // and replace 'YOUR_AUDIENCE_ID' with the actual audience ID
+    const resendAudienceId = env.RESEND_AUDIENCE_ID;
+    if (!resendAudienceId) {
+      console.error("RESEND_AUDIENCE_ID is not configured");
+      return new Response(
+        JSON.stringify({
+          error: "Service configuration error: RESEND_AUDIENCE_ID",
+        }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const { data, error } = await resend.contacts.create({
       email: email,
-      audienceId: import.meta.env.RESEND_AUDIENCE_ID || "",
+      audienceId: resendAudienceId,
     });
 
     if (error) {
