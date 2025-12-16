@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
@@ -17,7 +18,10 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			🧑🏻‍💻 I'm Mo Atie, a Software Engineering leader focused on scalable software and sustainable, high-performing engineering teams.</p>
 			<p>🤖 Lately, I've been deep into AI-assisted development (primarily Claude Code) and evaluating LLMs for an e-commerce agentic AI I'm building. More on that in the future.</p>
 			<p>🔜 Coming soon, a blog where I'll share my thoughts and experiences in software engineering, both the technical craft and the leadership aspects.</p>
-			<p>👋🏼 You can reach out to me via <a href="mailto:mhd.atie.ca@gmail.com">email</a> or <a href="https://www.linkedin.com/in/mo-atie/">LinkedIn</a>.</p>
+
+			<SubscribeForm />
+
+			<p>You can also reach out via <a href="mailto:mhd.atie.ca@gmail.com">email</a> or <a href="https://www.linkedin.com/in/mo-atie/">LinkedIn</a>.</p>
 		</main>
 		<Footer />
 	</body>
