@@ -5,7 +5,7 @@ Stack:
   - Backend: Cloudflare Pages Functions
   - Email Service: Resend API
   - Bot Protection: Cloudflare Turnstile
-  - Hosting: Cloudflare Pages [moatie.dev](moatie.dev)
+  - Hosting: Cloudflare Pages [http://moatie.dev](moatie.dev)
 
 ## 🚀 Project Structure
 
