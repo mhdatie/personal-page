@@ -1,6 +1,11 @@
 # Personal Page
 
-Built using Astro, Cloudflare Pages, Cloudflare Turnstile and Resend
+Stack:
+  - Frontend: Astro with hybrid rendering
+  - Backend: Cloudflare Pages Functions
+  - Email Service: Resend API
+  - Bot Protection: Cloudflare Turnstile
+  - Hosting: Cloudflare Pages [moatie.dev](moatie.dev)
 
 ## 🚀 Project Structure
 
