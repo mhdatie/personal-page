@@ -1,8 +1,6 @@
-# Astro Starter Kit: Blog
+# Personal Page
 
-```sh
-npm create astro@latest -- --template blog
-```
+Built using Astro, Cloudflare Pages, Cloudflare Turnstile and Resend
 
 ## 🚀 Project Structure
 
