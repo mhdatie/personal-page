@@ -25,14 +25,14 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 		</div>
 
 		<!-- Cloudflare Turnstile widget -->
-		<div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-callback="onTurnstileSuccess"></div>
+		<div id="turnstile-widget"></div>
 
 		<div id="form-message" class="form-message" role="alert" aria-live="polite"></div>
 	</form>
 </div>
 
 <!-- Cloudflare Turnstile Script -->
-<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 
 <style>
 	.subscribe-form-container {
@@ -58,7 +58,7 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 		flex-wrap: wrap;
 	}
 
-	.cf-turnstile {
+	#turnstile-widget {
 		margin-top: 1rem;
 	}
 
@@ -146,6 +146,29 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 	}
 </style>
 
+<script is:inline define:vars={{ TURNSTILE_SITE_KEY }}>
+	// Store widget ID globally
+	window.turnstileWidgetId = null;
+
+	// Function to render Turnstile when ready
+	function renderTurnstile() {
+		if (window.turnstile && document.getElementById('turnstile-widget')) {
+			window.turnstileWidgetId = window.turnstile.render('#turnstile-widget', {
+				sitekey: TURNSTILE_SITE_KEY,
+			});
+		}
+	}
+
+	// Render Turnstile when script loads or page is ready
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', function() {
+			setTimeout(renderTurnstile, 100);
+		});
+	} else {
+		setTimeout(renderTurnstile, 100);
+	}
+</script>
+
 <script>
 	const form = document.getElementById('subscribe-form') as HTMLFormElement;
 	const emailInput = document.getElementById('email') as HTMLInputElement;
@@ -154,34 +177,40 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 	const buttonLoading = submitButton.querySelector('.button-loading') as HTMLSpanElement;
 	const messageDiv = document.getElementById('form-message') as HTMLDivElement;
 
-	let turnstileToken = '';
-
-	// Callback for Turnstile success
-	(window as any).onTurnstileSuccess = (token: string) => {
-		turnstileToken = token;
-	};
-
 	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
+		e.stopPropagation();
 
 		const email = emailInput.value.trim();
 
 		// Client-side validation
 		if (!email) {
 			showMessage('Please enter your email address.', 'error');
-			return;
+			return false;
 		}
 
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(email)) {
 			showMessage('Please enter a valid email address.', 'error');
-			return;
+			return false;
 		}
+
+		// Wait a bit for Turnstile to be ready if needed
+		await new Promise(resolve => setTimeout(resolve, 100));
+
+		// Get Turnstile token directly from the widget
+		let turnstileToken = '';
+
+		if ((window as any).turnstile && (window as any).turnstileWidgetId !== null && (window as any).turnstileWidgetId !== undefined) {
+			turnstileToken = (window as any).turnstile.getResponse((window as any).turnstileWidgetId);
+		}
+
+		console.log('Turnstile token:', turnstileToken ? 'Token received' : 'No token');
 
 		// Check Turnstile completion
 		if (!turnstileToken) {
 			showMessage('Please complete the verification challenge.', 'error');
-			return;
+			return false;
 		}
 
 		// Set loading state
@@ -206,23 +235,33 @@ const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
 			if (response.ok) {
 				showMessage(data.message || 'Successfully subscribed!', 'success');
-				form.reset();
-				turnstileToken = '';
-				// Reset Turnstile widget
-				if ((window as any).turnstile) {
-					(window as any).turnstile.reset();
+				emailInput.value = '';
+				// Reset Turnstile widget on success
+				if ((window as any).turnstile && (window as any).turnstileWidgetId !== null) {
+					(window as any).turnstile.reset((window as any).turnstileWidgetId);
 				}
 			} else {
 				showMessage(data.error || 'Something went wrong. Please try again.', 'error');
+				// Reset Turnstile on error too, so user can try again
+				if ((window as any).turnstile && (window as any).turnstileWidgetId !== null) {
+					(window as any).turnstile.reset((window as any).turnstileWidgetId);
+				}
 			}
 		} catch (error) {
+			console.error('Subscription error:', error);
 			showMessage('Network error. Please check your connection and try again.', 'error');
+			// Reset Turnstile on error
+			if ((window as any).turnstile && (window as any).turnstileWidgetId !== null) {
+				(window as any).turnstile.reset((window as any).turnstileWidgetId);
+			}
 		} finally {
 			// Reset button state
 			submitButton.disabled = false;
 			buttonText.style.display = 'inline';
 			buttonLoading.style.display = 'none';
 		}
+
+		return false;
 	});
 
 	function showMessage(message: string, type: 'success' | 'error') {

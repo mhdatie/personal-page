@@ -1,11 +1,15 @@
 ---
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+import FallbackImage from '../assets/my-thumbnail.jpeg';
 ---
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<div class="title-container">
+			<img src={FallbackImage.src} alt="Site icon" class="site-icon" />
+			<h2><a href="/">{SITE_TITLE}</a></h2>
+		</div>
 		<div class="internal-links">
 			<HeaderLink href="/blog">Blog</HeaderLink>
 		</div>
@@ -29,6 +33,20 @@ import HeaderLink from './HeaderLink.astro';
 		background: white;
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 	}
+
+	.title-container {
+		display: flex;
+		align-items: center;
+		gap: 0.15rem;
+	}
+
+	.site-icon {
+		width: 32px;
+		height: 32px;
+		border-radius: 4px;
+		object-fit: cover;
+	}
+
 	h2 {
 		margin: 0;
 		font-size: 1em;
