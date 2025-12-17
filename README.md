@@ -1,8 +1,11 @@
-# Astro Starter Kit: Blog
+# Personal Page
 
-```sh
-npm create astro@latest -- --template blog
-```
+Stack:
+  - Frontend: Astro with hybrid rendering
+  - Backend: Cloudflare Pages Functions
+  - Email Service: Resend API
+  - Bot Protection: Cloudflare Turnstile
+  - Hosting: Cloudflare Pages [moatie.dev](https://moatie.dev)
 
 ## 🚀 Project Structure
 
