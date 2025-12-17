@@ -55,3 +55,27 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+
+<!-- Console Easter Egg for Developers -->
+<script is:inline>
+	console.log(
+		'%c👋 Hey there, fellow developer!',
+		'font-size: 20px; font-weight: bold; color: #0066cc;'
+	);
+	console.log(
+		'%c🔍 Like what you see? This site is open source!',
+		'font-size: 14px; color: #666;'
+	);
+	console.log(
+		'%c⭐ Check out the code: https://github.com/mhdatie/personal-page',
+		'font-size: 14px; color: #0066cc; font-weight: bold;'
+	);
+	console.log(
+		'%c💬 Built with Astro, hosted on Cloudflare Pages',
+		'font-size: 12px; color: #666; font-style: italic;'
+	);
+	console.log(
+		'%c🚀 Feel free to fork, learn, or contribute!',
+		'font-size: 14px; color: #00a67d;'
+	);
+</script>

@@ -4,6 +4,11 @@ const today = new Date();
 
 <footer>
 	&copy; {today.getFullYear()} Mo Atie. All rights reserved.
+	<div class="source-link">
+		<a href="https://github.com/mhdatie/personal-page" target="_blank" rel="noopener noreferrer">
+			<code>&lt;/&gt;</code> Built in public
+		</a>
+	</div>
 	<div class="social-links">
 		<a href="https://github.com/mhdatie" target="_blank">
 			<span class="sr-only">Go to Mo's GitHub</span>
@@ -23,6 +28,40 @@ const today = new Date();
 		color: rgb(var(--gray));
 		text-align: center;
 	}
+
+	.source-link {
+		margin-top: 0.75em;
+		font-size: 0.9em;
+	}
+
+	.source-link a {
+		color: rgb(var(--gray));
+		text-decoration: none;
+		transition: all 0.2s ease;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+	}
+
+	.source-link code {
+		font-family: 'Courier New', monospace;
+		font-size: 1.1em;
+		font-weight: bold;
+		color: rgb(var(--gray-dark));
+		background: rgba(0, 0, 0, 0.05);
+		padding: 0.1em 0.3em;
+		border-radius: 3px;
+	}
+
+	.source-link a:hover {
+		color: #0066cc;
+	}
+
+	.source-link a:hover code {
+		color: #0066cc;
+		background: rgba(0, 102, 204, 0.1);
+	}
+
 	.social-links {
 		display: flex;
 		justify-content: center;
