@@ -19,6 +19,7 @@ My approach to building software in general is understanding the "why" behind go
 Luckily, we live in a time where developer frameworks and tooling are so advanced that you end up with so many options and ways to get to the same end result. And so, the "how" behind the "why" becomes more about tradeoffs and how much you're willing to spend time to satisfy your requirements. For Backend engineers who don't enjoy Frontend work, I found that leveraging AI-assisted coding is a perfect use case for that, which I leveraged to build most of the functionality explained below the way I thought made sense (I also enjoy correcting AI coding assumptions).
 
 I wanted this site to help me:
+
 - Build personal brand and reach
 - Create a space for my thoughts
 - Share learnings with the community
@@ -29,11 +30,11 @@ With those goals in mind, here's how I chose each piece of the stack.
 
 As a software developer, I obsess over developer frameworks that are easy to use, well documented, have a strong community backing, offer optionality and genuinely care about system performance. Astro to me checked off all those items. I wanted something fun and simple to use to act as my baseline architecture, and have it be extended with functionality offered by other third-party solutions or by functionality I build myself.
 
-On extending functionality, Astro offers multiple ways to run serverless functions (mainly dictated by your deployment provider adapter API), and you can choose which parts of your website is rendered statically while leverage features such as API fetching for dynamic content, improving overall load times. This is the so-called `Islands Architecture` which is further explained by [Astro's official docs](https://docs.astro.build/en/concepts/islands/).
+On extending functionality, Astro offers multiple ways to run serverless functions (mainly dictated by your deployment provider adapter API), and you can choose which parts of your website is rendered statically while leveraging features such as API fetching for dynamic content, improving overall load times. This is the so-called `Islands Architecture` which is further explained by [Astro's official docs](https://docs.astro.build/en/concepts/islands/).
 
 #### Resend Integration
 
-The first CTA (Call-To-Action) I thought of providing is for visitors to subsribe to my mailing list. It's a simple form in a re-usable directive, written in plain HTML, CSS and JS. It allows a vistor to enter their email and click submit, the JS will verify the email input format before submitting the email.
+The first CTA (Call-To-Action) I thought of providing is for visitors to subscribe to my mailing list. It's a simple form in a re-usable directive, written in plain HTML, CSS and JS. It allows a vistor to enter their email and click submit, the JS will verify the email input format before submitting the email.
 
 I decided to use [Resend](https://resend.com/) for their easy-to-use API and generous free plan. They offer a simple API call to create an email contact, and they handle any deduplication needed in submissions, which is perfect for my use case.
 
@@ -62,9 +63,9 @@ You also need to keep in mind that `Resend` will provide an API Token that you s
 
 #### Conclusion
 
-I consider this to be a great foundation for what I'm looking to build as a start. It's simple and extremely extensible as `Resend` and `Cloudflare` offer many other useful services. It also proves that relying on well established frameworks and integrations alongside simplicity is always the right approach to any new project.
+I consider this to be a great foundation for what I'm looking to build as a start. It's simple and extremely extensible as `Resend` and `Cloudflare` offer many other useful services. It also proves that relying on well established frameworks and integrations alongside simplicity is always the right approach for simple projects or MVPs.
 
-Building this foundation took me around 6 hours with the help of `Claude Code` for the research, with most of my time gone to manually move my DNS records from Squarespace to Cloudflare, as well as learning how to use Cloudflare (Navigating their dashboard was a challenge).
+Building this foundation took me around 6 hours with the help of `Claude Code` for the research, with most of my time gone to manually move my DNS records from Squarespace to Cloudflare, as well as learning how to use Cloudflare (navigating their dashboard was a challenge).
 
 If I were to charge subscribers for content in the future, I would probably start off by integrating `Stripe` for payments as another serverless function, and only use another blogging platform such as `Substack` if my audience scales so much or if I'm seriously considering a stronger reach.
 
