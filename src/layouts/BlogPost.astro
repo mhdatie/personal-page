@@ -5,6 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -52,6 +53,11 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			.subscribe-section {
+				margin-top: 3rem;
+				padding-top: 2rem;
+				border-top: 1px solid rgb(var(--gray-light));
+			}
 		</style>
 	</head>
 
@@ -78,6 +84,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 						<hr />
 					</div>
 					<slot />
+
+					<div class="subscribe-section">
+						<SubscribeForm />
+					</div>
 				</div>
 			</article>
 		</main>
