@@ -65,7 +65,7 @@ You also need to keep in mind that `Resend` will provide an API Token that you s
 
 I consider this to be a great foundation for what I'm looking to build as a start. It's simple and extremely extensible as `Resend` and `Cloudflare` offer many other useful services. It also proves that relying on well established frameworks and integrations alongside simplicity is always the right approach for simple projects or MVPs.
 
-Building this foundation took me around 6 hours with the help of `Claude Code` for research, with most of my time spent manually moving my DNS records from Squarespace to Cloudflare, as well as learning how to use Cloudflare (navigating their dashboard was a challenge).
+Building this foundation took me around 6 hours with the help of `Claude Code` for research, with most of my time spent manually moving my DNS records from Squarespace to Cloudflare, as well as learning how to use Cloudflare Pages (navigating their dashboard was a challenge).
 
 If I were to charge subscribers for content in the future, I would probably start off by integrating `Stripe` for payments as another serverless function, and only use another blogging platform such as `Substack` if my audience scales so much or if I'm seriously considering a stronger reach.
 
