@@ -4,6 +4,8 @@ description: "How I built a production-ready personal website with email subscri
 pubDate: "Dec 24 2025"
 ---
 
+import Mermaid from '../../components/Mermaid.astro';
+
 As a backend engineer, I wanted a personal site that was fast, extensible, and didn't require me to become a frontend expert. After researching modern frameworks, I landed on a stack that checks all the boxes and costs nothing to run.
 
 Here's what I built and why this stack is perfect for getting a site live quickly.
@@ -60,6 +62,48 @@ You also need to keep in mind that `Resend` will provide an API Token that you s
 
 - When a visitor clicks on Submit, Turnstile verification is invoked and only when it's successful that the `Resend` POST endpoint is called.
 - The verification does not run for simply landing on the page which is an important point to call out.
+
+#### Architecture Overview
+
+Here's how all the pieces fit together:
+
+<Mermaid code={`
+graph TB
+    User[👤 Visitor]
+    CDN[Cloudflare Pages CDN<br/>Static Site Hosting]
+    Form[Email Subscription Form<br/>HTML/CSS/JS]
+    Turnstile[Cloudflare Turnstile<br/>Bot Protection]
+    Worker[Cloudflare Workers<br/>/api/subscribe]
+    Resend[Resend API<br/>Email Management]
+    Secrets[Environment Variables<br/>API Tokens]
+
+    User -->|1. Visit Site| CDN
+    CDN -->|2. Serve Static Content| Form
+    User -->|3. Submit Email| Form
+    Form -->|4. Trigger Verification| Turnstile
+    Turnstile -->|5. Verification Token| Worker
+    Secrets -.->|Inject Secrets| Worker
+    Worker -->|6. Validate & Forward| Resend
+    Resend -->|7. Store Contact| Resend
+    Worker -->|8. Response| Form
+    Form -->|9. Show Confirmation| User
+
+    style CDN fill:#f9a825
+    style Worker fill:#f9a825
+    style Turnstile fill:#f9a825
+    style Resend fill:#4285f4
+    style Secrets fill:#ea4335
+    style User fill:#34a853
+`} />
+
+The architecture follows a simple serverless pattern:
+- **Astro** builds the static site with Islands Architecture
+- **Cloudflare Pages** serves static content from edge locations worldwide
+- **Cloudflare Workers** handle serverless API logic with injected secrets
+- **Turnstile** protects against bot abuse (1M free verifications/month)
+- **Resend** manages email contacts with automatic deduplication (3K emails/month free)
+
+Total cost: **$0/month** for typical personal site traffic.
 
 #### Conclusion
 
